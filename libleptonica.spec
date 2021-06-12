@@ -1,6 +1,6 @@
 Name: libleptonica
-Version: 1.81.0
-Release: alt1
+Version: 1.81.1
+Release: alt1.1
 
 License: Leptonica license (BSD-like)
 Group: System/Libraries
@@ -16,6 +16,8 @@ Patch0: %{name}-1.81.0-alt-makefile.patch
 BuildRequires: libgif-devel libjpeg-devel libpng-devel libtiff-devel libwebp-devel
 BuildRequires: zlib-devel dos2unix
 # BuildRequires: libopenjpeg2.0-devel (no in р9)
+Provides: leptonica = %version-%release
+Obsoletes: leptonica = 1.80.0
 
 Summary: A library for manipulating images
 Summary(ru_RU.UTF-8): Библиотека для операций над изображениями
@@ -61,7 +63,7 @@ which use Leptonica library.
 %prep
 %setup -q
 # the lines in the file have different endings
-dos2unix Makefile.am
+#dos2unix Makefile.am
 %patch0 -p1
 
 %build
@@ -96,5 +98,8 @@ rm -f %{buildroot}%{_libdir}/*.la
 %{_libdir}/*.a
 
 %changelog
+* Sat Jun 12 2021 Koi <eg.evgeniy@gmail.com> 1.81.1-alt1.1
+- Add new version 1.81.1
+
 * Mon May 31 2021 Koi <eg.evgeniy@gmail.com> 1.80.0-alt1
 - Initial release for ALT Linux Club
