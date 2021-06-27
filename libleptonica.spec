@@ -1,20 +1,25 @@
 Name: libleptonica
 Version: 1.81.1
-Release: alt1.1
+Release: alt1
 
 License: Leptonica license (BSD-like)
 Group: System/Libraries
 Url: http://www.leptonica.com
-Packager: Koi <eg.evgeniy at gmail.com>
+Packager: Evgeny Chuck <koi at altlinux.org>
 
-Source0: %{name}-%{version}.tar
-Patch0: %{name}-1.81.0-alt-makefile.patch
+Source: %name-%version.tar
+# Source-url: https://github.com/DanBloomberg/leptonica/releases/download/v%version/leptonica-v%version.tar.gz
+Patch: %name-1.81.0-alt-makefile.patch
 
 # Automatically added by buildreq on Mon May 31 2021 (-bi)
 # optimized out: elfutils glibc-kernheaders-generic glibc-kernheaders-x86 perl pkg-config python-base sh4 termutils zlib-devel
 
-BuildRequires: libgif-devel libjpeg-devel libpng-devel libtiff-devel libwebp-devel
-BuildRequires: zlib-devel dos2unix
+BuildRequires: libgif-devel
+BuildRequires: libjpeg-devel
+BuildRequires: libpng-devel
+BuildRequires: libtiff-devel
+BuildRequires: libwebp-devel
+BuildRequires: zlib-devel
 # BuildRequires: libopenjpeg2.0-devel (no in р9)
 Provides: leptonica = %version-%release
 Obsoletes: leptonica = 1.80.0
@@ -36,15 +41,23 @@ files, PDF files, and extracting strings from arrays.
 Summary: Development files for programs which will use the Leptonica library
 Summary(ru_RU.UTF-8): Заголовочные файлы для программ, использующих библиотеку Leptonica
 Group: Development/C
-Requires: %name = %version-%release glibc-devel libcurl-devel libssl-devel zlib-devel libjpeg-devel libtiff-devel libpng-devel
+
+Requires: glibc-devel
+Requires: libcurl-devel
+Requires: libssl-devel
+Requires: zlib-devel
+Requires: libjpeg-devel
+Requires: libtiff-devel
+Requires: libpng-devel
+Requires: %name = %version-%release 
 
 %description devel
-The %{name}-devel package contains header files for
-developing applications that use %{name}.
+The %name-devel package contains header files for
+developing applications that use %name.
 
 %description -l ru_RU.UTF-8 devel
-Пакет %{name}-devel содержит заголовочные файлы для
-разработки приложений, использующих %{name}.
+Пакет %name-devel содержит заголовочные файлы для
+разработки приложений, использующих %name.
 
 %package devel-static
 Summary: Static Leptonica library
@@ -61,10 +74,8 @@ which use Leptonica library.
 разработки, которая использует библиотеку Leptonica.
 
 %prep
-%setup -q
-# the lines in the file have different endings
-#dos2unix Makefile.am
-%patch0 -p1
+%setup
+%patch -p1
 
 %build
 %autoreconf
@@ -74,30 +85,33 @@ which use Leptonica library.
 %install
 %makeinstall_std
 # link to a non-existent file
-rm -f %{buildroot}%{_libdir}/*.la
+rm -f %buildroot%_libdir/*.la
 
 %files
 # License and notes are needed in the main package, it makes no sense to separate them into another package
 %doc README.html
 %doc version-notes.html
 %doc leptonica-license.txt
-%{_libdir}/*.so.*
+%_libdir/*.so.*
 # utilities for working with files
 # without them, the work with the program will be incomplete
-%{_bindir}/*
+%_bindir/*
 
 %files devel
-%{_includedir}/leptonica
-%{_libdir}/liblept.so
-%{_libdir}/libleptonica.so
-%{_libdir}/pkgconfig/lept.pc
-%{_libdir}/cmake/LeptonicaConfig-version.cmake
-%{_libdir}/cmake/LeptonicaConfig.cmake
+%_includedir/leptonica
+%_libdir/liblept.so
+%_libdir/libleptonica.so
+%_pkgconfigdir/lept.pc
+%_libdir/cmake/LeptonicaConfig-version.cmake
+%_libdir/cmake/LeptonicaConfig.cmake
 
 %files devel-static
-%{_libdir}/*.a
+%_libdir/*.a
 
 %changelog
+* Sun Jun 27 2021 Evgeny Chuck <koi@altlinux.org> 1.81.1-alt1
+- initial build for ALT Sisyphus
+
 * Sat Jun 12 2021 Koi <eg.evgeniy@gmail.com> 1.81.1-alt1.1
 - Add new version 1.81.1
 
